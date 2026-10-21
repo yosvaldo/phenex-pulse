@@ -2,12 +2,23 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, Factory, Users, BarChart3, LogOut, ShoppingBag } from "lucide-react";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
+import { api } from "@/lib/api";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+      router.push("/auth/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   const navItems = [
     { name: "Dashboard", path: "/", icon: LayoutDashboard },
@@ -65,7 +76,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </a>
           </div>
 
-          <button className="flex items-center gap-3 px-4 py-2 w-full text-slate-400 hover:text-white transition-colors">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-2 w-full text-slate-400 hover:text-white transition-colors"
+          >
             <LogOut className="w-5 h-5" /> Logout
           </button>
         </div>

@@ -4,12 +4,20 @@ import { jwtVerify } from 'jose'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const token = request.cookies.get('accessToken')?.value
+
+  if (pathname === '/auth/login' && token) {
+    try {
+      const secret = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET)
+      await jwtVerify(token, secret)
+      return NextResponse.redirect(new URL('/', request.url))
+    } catch {
+    }
+  }
 
   if (pathname === '/auth/login' || pathname.startsWith('/api/auth')) {
     return NextResponse.next()
   }
-
-  const token = request.cookies.get('accessToken')?.value
 
   if (!token) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
@@ -35,5 +43,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|auth/login).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }
