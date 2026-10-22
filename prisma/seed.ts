@@ -22,7 +22,30 @@ async function main() {
     },
   })
 
+  const factory = await prisma.factory.upsert({
+    where: { id: 'factory-1' },
+    update: {},
+    create: {
+      id: 'factory-1',
+      name: 'Phenex Primary Mfg',
+      location: 'Shenzhen, China',
+    },
+  })
+
+  const product = await prisma.product.upsert({
+    where: { sku: 'INF-X8-300' },
+    update: {},
+    create: {
+      name: 'Inferno X8 300m',
+      sku: 'INF-X8-300',
+      reorderPoint: 15000,
+      currentStock: 8000,
+    },
+  })
+
   console.log('Seeded User:', dev.email)
+  console.log('Seeded Factory:', factory.name)
+  console.log('Seeded Product:', product.name)
 }
 
 main()
