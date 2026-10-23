@@ -60,6 +60,7 @@ model Product {
   sku          String   @unique
   description  String?
   reorderPoint Int      @default(0)
+  reorderRule  String?
   currentStock Int      @default(0)
   orders       Order[]
   invoices     InvoiceItem[]

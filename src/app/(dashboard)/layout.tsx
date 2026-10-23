@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Factory, Users, BarChart3, LogOut, ShoppingBag } from "lucide-react";
+import { LayoutDashboard, Factory, Users, BarChart3, LogOut, ShoppingBag, Package, Building2 } from "lucide-react";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 import { api } from "@/lib/api";
 
@@ -22,6 +22,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const navItems = [
     { name: "Dashboard", path: "/", icon: LayoutDashboard },
+    { name: "Products", path: "/products", icon: Package },
+    { name: "Factories", path: "/factories", icon: Building2 },
     { name: "Suppliers", path: "/suppliers", icon: Factory },
     { name: "Distributors", path: "/distributors", icon: Users },
     { name: "Reports", path: "/reports", icon: BarChart3 },
