@@ -1,15 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Factory, Users, BarChart3, LogOut, ShoppingBag, Package, Building2, Receipt } from "lucide-react";
+import { LayoutDashboard, Factory, Users, LogOut, ShoppingBag, Package, Building2, Receipt, Menu, X } from "lucide-react";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 import { api } from "@/lib/api";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -41,23 +43,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         { name: "Partners", path: "/distributors", icon: Users },
         { name: "Orders", path: "/invoices", icon: Receipt },
       ]
-    },
-    {
-      label: "System",
-      items: [
-        { name: "Reports", path: "/reports", icon: BarChart3 },
-      ]
     }
   ];
 
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans">
-      <aside className="w-64 bg-slate-950 text-white flex-col hidden md:flex">
-        <div className="h-20 flex items-center px-6 border-b border-slate-800/50 shrink-0">
-          <div className="flex items-center gap-3">
-            <Image src="/icon.png" alt="Phenex Pulse" width={32} height={32} className="object-contain" />
-            <span className="font-bold text-lg tracking-wider text-amber-500">PHENEX PULSE</span>
-          </div>
+      {isMobileOpen && (
+        <div className="fixed inset-0 bg-slate-900/50 z-40 md:hidden" onClick={() => setIsMobileOpen(false)} />
+      )}
+
+      <aside className={`fixed md:sticky top-0 h-screen w-64 bg-slate-950 text-white flex flex-col z-50 transition-transform duration-300 ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
+        <div className="py-10 flex flex-col items-center justify-center border-b border-slate-800/50 shrink-0 relative">
+          <button onClick={() => setIsMobileOpen(false)} className="absolute top-4 right-4 md:hidden text-slate-400 hover:text-white">
+            <X className="w-6 h-6" />
+          </button>
+          <Image src="/icon.png" alt="Phenex Pulse" width={110} height={110} className="object-contain drop-shadow-xl mb-4" />
+          <span className="font-bold text-2xl tracking-widest text-amber-500 uppercase">Phenex</span>
+          <span className="text-[11px] tracking-[0.3em] text-slate-400 mt-1 uppercase">Pulse</span>
         </div>
         
         <nav className="flex-1 py-6 px-4 space-y-6 overflow-y-auto custom-scrollbar">
@@ -75,6 +77,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <Link
                       key={item.name}
                       href={item.path}
+                      onClick={() => setIsMobileOpen(false)}
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-all ${
                         isActive 
                           ? "bg-amber-500/10 text-amber-500" 
@@ -117,14 +120,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
-          <h1 className="text-xl font-semibold text-slate-800">Welcome, Dev</h1>
-          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-amber-500 font-bold">
+      <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        <header className="h-16 md:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 shrink-0">
+          <button onClick={() => setIsMobileOpen(true)} className="md:hidden text-slate-600 hover:text-amber-500">
+            <Menu className="w-6 h-6" />
+          </button>
+          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-amber-500 font-bold ml-auto">
             DV
           </div>
         </header>
-        <div className="p-8 flex-1 overflow-auto">
+        <div className="p-4 md:p-8 flex-1 overflow-auto">
           {children}
         </div>
       </main>

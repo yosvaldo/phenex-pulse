@@ -139,8 +139,8 @@ export default function ProductsPage() {
         </div>
       )}
 
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-        <table className="w-full text-left text-sm text-slate-600">
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-x-auto">
+        <table className="w-full min-w-200 text-left text-sm text-slate-600">
           <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase font-semibold">
             <tr>
               <th className="px-6 py-4">Product Name</th>

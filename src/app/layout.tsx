@@ -4,6 +4,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Phenex Pulse",
   description: "Real-time insights and management for Phenex Fishing Line.",
+  manifest: "/manifest.json",
+  themeColor: "#020617",
 };
 
 export default function RootLayout({
