@@ -1,11 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#020617",
+};
 
 export const metadata: Metadata = {
   title: "Phenex Pulse",
   description: "Real-time insights and management for Phenex Fishing Line.",
   manifest: "/manifest.json",
-  themeColor: "#020617",
 };
 
 export default function RootLayout({

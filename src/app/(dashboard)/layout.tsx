@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <button onClick={() => setIsMobileOpen(false)} className="absolute top-4 right-4 md:hidden text-slate-400 hover:text-white">
             <X className="w-6 h-6" />
           </button>
-          <Image src="/icon.png" alt="Phenex Pulse" width={110} height={110} className="object-contain drop-shadow-xl mb-4" />
+          <Image src="/icon.png" alt="Phenex Pulse" width={110} height={110} className="object-contain drop-shadow-xl mb-4" priority />
           <span className="font-bold text-2xl tracking-widest text-amber-500 uppercase">Phenex</span>
           <span className="text-[11px] tracking-[0.3em] text-slate-400 mt-1 uppercase">Pulse</span>
         </div>
