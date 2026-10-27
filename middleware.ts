@@ -6,6 +6,10 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('accessToken')?.value
 
+  if (pathname.startsWith('/api/cron')) {
+    return NextResponse.next()
+  }
+
   if (pathname === '/auth/login' && token) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET)
@@ -43,5 +47,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.png|manifest.json).*)'],
 }
