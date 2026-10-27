@@ -11,17 +11,17 @@ export async function GET() {
     ]);
 
     const lowStockCount = products.filter(
-      p => (p.reorderRule === "THRESHOLD" || !p.reorderRule) && p.currentStock <= p.reorderPoint
+      (p: any) => (p.reorderRule === "THRESHOLD" || !p.reorderRule) && p.currentStock <= p.reorderPoint
     ).length;
 
-    const activeOrders = orders.filter(o => o.status !== "READY").length;
+    const activeOrders = orders.filter((o: any) => o.status !== "READY").length;
 
-    const totalRevenue = invoices.filter(i => i.status === "PAID").reduce((sum, i) => sum + i.totalAmount, 0);
-    const outstandingRevenue = invoices.filter(i => i.status !== "PAID").reduce((sum, i) => sum + i.totalAmount, 0);
+    const totalRevenue = invoices.filter((i: any) => i.status === "PAID").reduce((sum: any, i: any) => sum + i.totalAmount, 0);
+    const outstandingRevenue = invoices.filter((i: any) => i.status !== "PAID").reduce((sum: any, i: any) => sum + i.totalAmount, 0);
 
     const overdueInvoices = invoices
-      .filter(i => (i.status === "OVERDUE" || (i.status === "OUTSTANDING" && new Date(i.dueDate) < new Date())))
-      .map(i => ({
+      .filter((i: any) => (i.status === "OVERDUE" || (i.status === "OUTSTANDING" && new Date(i.dueDate) < new Date())))
+      .map((i: any) => ({
         distributor: i.distributor.name,
         amount: i.totalAmount,
         dueDate: i.dueDate

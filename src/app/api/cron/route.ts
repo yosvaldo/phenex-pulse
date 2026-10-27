@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     });
     
     const lowStockProducts = allThresholdProducts.filter(
-      (p) => p.currentStock <= p.reorderPoint
+      (p: any) => p.currentStock <= p.reorderPoint
     );
 
     if (lowStockProducts.length > 0) {
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     });
 
     if (dueInvoices.length > 0) {
-      const formattedInvoices = dueInvoices.map(inv => ({
+      const formattedInvoices = dueInvoices.map((inv: any) => ({
         ...inv,
         formattedDate: new Date(inv.dueDate).toLocaleDateString(),
         totalAmount: inv.totalAmount.toLocaleString("id-ID")
@@ -43,7 +43,7 @@ export async function GET(request: Request) {
       
       await EmailService.sendCollectionAlert(formattedInvoices);
       
-      const ids = dueInvoices.map(inv => inv.id);
+      const ids = dueInvoices.map((inv: any) => inv.id);
       await prisma.invoice.updateMany({
         where: { id: { in: ids }, status: "OUTSTANDING" },
         data: { status: "OVERDUE" }
