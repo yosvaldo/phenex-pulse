@@ -61,6 +61,7 @@ model Product {
   description  String?
   reorderPoint Int      @default(0)
   reorderRule  String?
+  isReordered  Boolean  @default(false)
   currentStock Int      @default(0)
   orders       Order[]
   invoices     InvoiceItem[]
@@ -74,7 +75,7 @@ model Order {
   productId      String
   quantity       Int
   status         GoodsStatus @default(PRODUCTION)
-  productionDays Int         // 15, 30, 45, 60, or 75
+  productionDays Int         
   orderDate      DateTime    @default(now())
   estimatedArrival DateTime?
   

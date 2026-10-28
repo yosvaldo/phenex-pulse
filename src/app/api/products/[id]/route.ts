@@ -14,6 +14,7 @@ export async function PATCH(request: Request, context: any) {
         reorderPoint: Number(body.reorderPoint),
         reorderRule: body.reorderRule,
         currentStock: Number(body.currentStock),
+        isReordered: Boolean(body.isReordered),
       },
     });
 

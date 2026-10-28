@@ -21,6 +21,7 @@ export async function POST(request: Request) {
         reorderPoint: Number(body.reorderPoint),
         reorderRule: body.reorderRule,
         currentStock: Number(body.currentStock || 0),
+        isReordered: Boolean(body.isReordered),
       }
     });
     return NextResponse.json(product, { status: 201 });

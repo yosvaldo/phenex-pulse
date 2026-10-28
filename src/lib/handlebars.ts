@@ -1,23 +1,18 @@
 import Handlebars from "handlebars";
-import fs from "fs";
-import { join } from "path";
+import { collectionTemplate, reorderTemplate } from "../templates";
 
-function renderTemplate(templateName: string, context: Record<string, unknown>): string {
-  const possiblePaths = [
-    join(process.cwd(), "src", "templates", templateName),
-    join(process.cwd(), "dist", "templates", templateName),
-    join(process.cwd(), "templates", templateName),
-  ];
+const templates = {
+  "collection.hbs": collectionTemplate,
+  "reorder.hbs": reorderTemplate,
+};
 
-  const fullPath = possiblePaths.find((p) => fs.existsSync(p));
-
-  if (!fullPath) {
-    throw new Error(
-      `Template "${templateName}" not found in paths: ${possiblePaths.join(", ")}`
-    );
+function renderTemplate(templateName: keyof typeof templates, context: Record<string, unknown>): string {
+  const templateSource = templates[templateName];
+  
+  if (!templateSource) {
+    throw new Error(`Template "${templateName}" not found.`);
   }
 
-  const templateSource = fs.readFileSync(fullPath, "utf-8");
   const compiled = Handlebars.compile(templateSource);
   return compiled(context);
 }

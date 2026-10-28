@@ -10,7 +10,8 @@ export async function GET(request: Request) {
 
   try {
     const allThresholdProducts = await prisma.product.findMany({
-      where: { 
+      where: {
+        isReordered: false,
         OR: [
           { reorderRule: "THRESHOLD" },
           { reorderRule: null }

@@ -16,6 +16,7 @@ export default function ProductsPage() {
   const [reorderPoint, setReorderPoint] = useState("");
   const [reorderRule, setReorderRule] = useState("THRESHOLD");
   const [currentStock, setCurrentStock] = useState("");
+  const [isReordered, setIsReordered] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -38,6 +39,7 @@ export default function ProductsPage() {
     setReorderPoint(product.reorderPoint.toString());
     setReorderRule(product.reorderRule || "THRESHOLD");
     setCurrentStock(product.currentStock.toString());
+    setIsReordered(product.isReordered || false);
     setShowForm(true);
   };
 
@@ -55,7 +57,7 @@ export default function ProductsPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const payload = { name, sku, reorderPoint, reorderRule, currentStock };
+      const payload = { name, sku, reorderPoint, reorderRule, currentStock, isReordered };
       if (editId) {
         await api.patch(`/products/${editId}`, payload);
       } else {
@@ -77,6 +79,7 @@ export default function ProductsPage() {
     setReorderPoint("");
     setReorderRule("THRESHOLD");
     setCurrentStock("");
+    setIsReordered(false);
   };
 
   const formatRule = (rule: string) => {
@@ -130,6 +133,13 @@ export default function ProductsPage() {
               <label className="block text-xs font-semibold text-slate-500 uppercase mb-1.5">Stock</label>
               <input type="number" required value={currentStock} onChange={(e) => setCurrentStock(e.target.value)} placeholder="0" className="w-full p-2.5 border border-slate-200 rounded-xl outline-none focus:border-amber-500"/>
             </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase mb-1.5">Reordered?</label>
+              <select value={isReordered ? "true" : "false"} onChange={(e) => setIsReordered(e.target.value === "true")} className="w-full p-2.5 border border-slate-200 rounded-xl outline-none focus:border-amber-500 bg-white">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
             <div className="md:col-span-6 flex justify-end mt-2">
               <button type="submit" disabled={submitting} className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-8 py-2.5 rounded-xl transition-colors disabled:opacity-50">
                 {submitting ? "Saving..." : (editId ? "Update Product" : "Save Product")}
@@ -147,7 +157,7 @@ export default function ProductsPage() {
               <th className="px-6 py-4">SKU</th>
               <th className="px-6 py-4">Current Stock</th>
               <th className="px-6 py-4">Reorder Point</th>
-              <th className="px-6 py-4">Strategy</th>
+              <th className="px-6 py-4">Reordered?</th>
               <th className="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
@@ -166,7 +176,13 @@ export default function ProductsPage() {
                     {product.currentStock.toLocaleString()}
                   </td>
                   <td className="px-6 py-4 text-slate-500">{product.reorderPoint.toLocaleString()}</td>
-                  <td className="px-6 py-4 text-slate-500 font-medium">{formatRule(product.reorderRule)}</td>
+                  <td className="px-6 py-4 text-slate-500">
+                    {product.isReordered ? (
+                      <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-md">Yes</span>
+                    ) : (
+                      <span className="px-2 py-1 bg-slate-100 text-slate-500 text-xs font-bold rounded-md">No</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4 text-right flex justify-end gap-3">
                     <button onClick={() => handleEdit(product)} className="text-slate-400 hover:text-amber-500 transition-colors"><Edit className="w-4 h-4" /></button>
                     <button onClick={() => handleDelete(product.id)} className="text-slate-400 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
