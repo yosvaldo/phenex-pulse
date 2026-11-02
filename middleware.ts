@@ -6,7 +6,12 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('accessToken')?.value
 
-  if (pathname.startsWith('/api/cron')) {
+  if (
+    pathname.startsWith('/api/cron') ||
+    pathname === '/sw.js' ||
+    pathname.startsWith('/workbox-') ||
+    pathname === '/manifest.json'
+  ) {
     return NextResponse.next()
   }
 
@@ -47,5 +52,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.png|manifest.json|sw\\.js|workbox-.*).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.png|manifest.json|sw.js|workbox-.*).*)'],
 }
